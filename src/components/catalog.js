@@ -1,3 +1,4 @@
+
 export class Catalog {
     #el = null
     #paginationEl = null
@@ -71,14 +72,12 @@ export class Catalog {
         window.history.pushState({}, '', url)
     }
 
-    loadItems () {
+    async loadItems () {
         try {
-            this.#getItems({ limit: this.limit, page: this.#page })
-                .then(({ items, total }) => {
-                    this.#total = total
-                    this.renderItems(items)
-                    this.renderPagination()
-        })
+            const res = await this.#getItems({ limit: this.limit, page: this.#page });
+            this.#total = res.total;
+            this.renderItems(res.items);
+            this.renderPagination();
         } catch (error) {
             console.log(error);
         }
